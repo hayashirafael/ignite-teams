@@ -19,9 +19,6 @@
       "@storate/*": [
         "./src/storate/*"
       ],
-      "@theme/*": [
-        "./src/theme/*"
-      ],
       "@utils/*": [
         "./src/utils/*"
       ]
