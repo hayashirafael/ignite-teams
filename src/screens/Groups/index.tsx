@@ -1,12 +1,13 @@
+import { useState, useCallback } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { FlatList } from 'react-native';
+import { groupsGetAll } from '@storage/group/groupsGetAll';
 import { Header } from '@components/Header';
-import { Container } from './styles';
 import { Highlight } from '@components/Highlight';
 import { GroupCard } from '@components/GroupCard';
-import { useState } from 'react';
-import { FlatList } from 'react-native';
 import { ListEmpty } from '@components/ListEmpty';
 import { Button } from '@components/Button';
-import { useNavigation } from '@react-navigation/native';
+import { Container } from './styles';
 
 export function Groups() {
   const [groups, setGroups] = useState<string[]>([]);
@@ -15,6 +16,26 @@ export function Groups() {
   function handleNewGroup() {
     navigation.navigate('new')
   }
+
+  async function fetchGroups() {
+    try {
+      const data = await groupsGetAll();
+      setGroups(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleOpenGroup(group: string) {
+    navigation.navigate('players', { group })
+  }
+
+  useFocusEffect(useCallback(() => {
+    console.log('use effect executous');
+    fetchGroups();
+  }, []));
+
+
   return (
     <Container>
       <Header />
@@ -25,7 +46,12 @@ export function Groups() {
       <FlatList
         data={groups}
         keyExtractor={item => item}
-        renderItem={({ item }) => <GroupCard title={item} />}
+        renderItem={({ item }) => (
+          <GroupCard
+            title={item}
+            onPress={() => handleOpenGroup(item)}
+          />
+        )}
         ListEmptyComponent={() => (
           <ListEmpty message='Cadastre uma turma' />
         )}

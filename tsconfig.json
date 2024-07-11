@@ -13,8 +13,8 @@
       "@screens/*": [
         "./src/screens/*"
       ],
-      "@storate/*": [
-        "./src/storate/*"
+      "@storage/*": [
+        "./src/storage/*"
       ],
       "@utils/*": [
         "./src/utils/*"
